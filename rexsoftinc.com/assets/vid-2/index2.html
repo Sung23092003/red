@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="vi">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Image Video Player</title>
+        <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            text-align: center;
+        }
+
+        .title {
+            color: white;
+            font-size: 2.5rem;
+            margin-bottom: 30px;
+        }
+
+        .image-container {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            width: 600px;
+            height: 400px;
+        }
+
+        .image-container:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Responsive background image */
+        .bg-image {
+            width: 100%;
+            height: 100%;
+            background-image: url('small-bg-image.jpg');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            display: block;
+        }
+
+        /* Medium screens (e.g., tablets) */
+        @media (min-width: 768px) {
+            .bg-image {
+                background-image: url('medium-bg-image.jpg');
+            }
+        }
+
+        /* Large screens (e.g., desktops) */
+        @media (min-width: 1200px) {
+            .bg-image {
+                background-image: url('large-bg-image.jpg');
+            }
+        }
+
+        .play-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .image-container:hover .play-overlay {
+            background: rgba(0,0,0,0.9);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .video-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+
+        .video-container {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+        }
+
+        .video-player {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            border-radius: 10px;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: rgba(255, 255, 255, 0.9);
+            color: #333;
+            border: 2px solid rgba(0, 0, 0, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 20px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            z-index: 10;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: scale(1.1);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+        }
+
+        .image-container:focus {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+        }
+
+        .close-btn:focus {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+        }
+
+        .video-player:focus {
+            outline: 3px solid #4A90E2;
+            outline-offset: 2px;
+        }
+
+        .instructions {
+            color: white;
+            margin-top: 20px;
+            font-size: 1.1rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .image-container {
+                width: 100%;
+                height: 250px;
+            }
+            
+            .title {
+                font-size: 2rem;
+            }
+            
+            .close-btn {
+                top: 10px;
+                right: 10px;
+                width: 35px;
+                height: 35px;
+                font-size: 18px;
+            }
+        }
+    </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1 class="title">Demo</h1>
+
+            <div class="image-container"
+                onclick="playVideo()"
+                onkeypress="handleKeyPress(event)"
+                tabindex="0"
+                role="button"
+                aria-label="Phát video - Nhấn Enter hoặc Space để phát video">
+                <div class="bg-image"
+                    aria-label="Hình thu nhỏ video - Click để phát video"></div>
+                <div class="play-overlay" aria-hidden="true">▶</div>
+            </div>
+
+        </div>
+
+        <div class="video-modal" id="videoModal" role="dialog" aria-modal="true"
+            aria-labelledby="video-title">
+            <div class="video-container">
+                <button class="close-btn"
+                    onclick="closeVideo()"
+                    tabindex="1"
+                    aria-label="Đóng video và quay lại trang chính">×</button>
+                <video class="video-player"
+                    controls
+                    tabindex="2"
+                    aria-label="Video player - Sử dụng các phím điều khiển để phát/dừng video">
+                    <source
+                        src="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                        type="video/mp4">
+                    <p>Trình duyệt của bạn không hỗ trợ phát video.
+                        <a
+                            href="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+                            download>Tải video về</a>
+                    </p>
+                </video>
+            </div>
+        </div>
+
+        <script>
+        const videoModal = document.getElementById('videoModal');
+        const videoPlayer = document.getElementsByClassName('video-player')[0];
+        const imageContainer = document.querySelector('.image-container');
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                playVideo();
+            }
+        }
+
+        function playVideo() {
+            videoModal.style.display = 'flex';
+            videoPlayer.play().catch(e => {
+                console.log('Auto-play prevented:', e);
+            });
+            document.body.style.overflow = 'hidden';
+            
+            document.querySelector('.close-btn').focus();
+        }
+
+        function closeVideo() {
+            videoModal.style.display = 'none';
+            videoPlayer.pause();
+            videoPlayer.currentTime = 0;
+            document.body.style.overflow = 'auto';
+            
+            imageContainer.focus();
+        }
+
+        function trapFocus(event) {
+            if (videoModal.style.display === 'flex') {
+                const focusableElements = videoModal.querySelectorAll(
+                    'button, video, [tabindex]:not([tabindex="-1"])'
+                );
+                const firstElement = focusableElements[0];
+                const lastElement = focusableElements[focusableElements.length - 1];
+
+                if (event.key === 'Tab') {
+                    if (event.shiftKey) {
+                        if (document.activeElement === firstElement) {
+                            event.preventDefault();
+                            lastElement.focus();
+                        }
+                    } else {
+                        if (document.activeElement === lastElement) {
+                            event.preventDefault();
+                            firstElement.focus();
+                        }
+                    }
+                }
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && videoModal.style.display === 'flex') {
+                closeVideo();
+            }
+        });
+    </script>
+    </body>
+</html>
