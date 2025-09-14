@@ -54,12 +54,15 @@ body {
         visibility: visible
     }
 }
+
 body {
     -webkit-animation: none;
     -moz-animation: none;
     -ms-animation: none;
     animation: none
 }
+
+
 .case-study {
     background-color: #f4f6f7;
     padding: 50px 0
@@ -80,7 +83,10 @@ body {
 }
 
 .case-study__links {
-    margin: 0-10px
+    margin: 0-10px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
 }
 
 .case-study__links a {
@@ -157,6 +163,10 @@ amp-selector.tabpanels [role=tabpanel][selected] {
     background-color: #fff
 }
 
+.tabpanels {
+    margin-top: 10px;
+}
+
 .tabpanels a,
 .tabs-with-selector [role=tab] {
     display: flex;
@@ -190,6 +200,17 @@ amp-selector.tabpanels [role=tabpanel][selected] {
     color: #ee0d37
 }
 
+.tab-panel {
+    display: none;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+
+.tab-panel a.sub-tab {
+    display: inline-block;
+}
+
 @media screen and (max-width:768px) {
     .case-study {
         padding: 30px 0 10px
@@ -207,6 +228,139 @@ amp-selector.tabpanels [role=tabpanel][selected] {
         margin-bottom: 33px
     }
 }
+
+/* Wrapper */
+.case-study__grid {
+    margin-top: 10px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+/* Image styling */
+.case-grid__img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+}
+
+.case-grid__img:hover {
+    transform: translateY(-4px) scale(1.05);
+}
+
+@media (max-width: 768px) {
+    .case-grid__img {
+        height: 150px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .case-grid__img {
+        height: 220px;
+    }
+}
+
+/* case card */
+.case-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.case-card:hover {
+    transform: translateY(-6px);
+}
+
+.case-card__img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 12px;
+}
+
+.case-card__meta {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 800;
+    color: #ee0d37;
+    margin-bottom: 10px;
+}
+
+.case-card__meta .category {
+    text-decoration: underline;
+}
+
+.case-card__title {
+    font-size: 16px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #1e2123;
+}
+
+.case-card__desc {
+    font-size: 14px;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .case-card {
+        padding: 6px;
+    }
+
+    .case-card__desc {
+        display: none;
+    }
+
+    .case-card__meta{
+        display: none;
+    }
+}
+
+/* Pagination */
+.pagination {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+    gap: 8px;
+    padding: 0;
+}
+
+.pagination li a {
+    display: block;
+    padding: 8px 14px;
+    background: #fff;
+    border-radius: 6px;
+    color: #7b8389;
+    font-weight: 600;
+    text-decoration: none;
+    transition: .3s;
+}
+
+.pagination li a:hover,
+.pagination li a.active {
+    background: #ee0d37;
+    color: #fff;
+}
+
+.pagination li span {
+    display: block;
+    padding: 8px 14px;
+    color: #7b8389;
+    font-weight: 600;
+}
+
 
 amp-selector [option][selected] {
     cursor: pointer
@@ -2675,7 +2829,7 @@ input[type=number] {
 
 * {
     box-sizing: border-box;
-    margin-left: 50px;
+    /* margin-left: 50px; */
 }
 
 :focus {
@@ -5370,6 +5524,7 @@ strong {
     z-index: -1;
     text-transform: none
 }
+
 .notification {
     box-sizing: border-box;
     /* Quan trọng: Bao gồm padding trong tổng chiều rộng */
