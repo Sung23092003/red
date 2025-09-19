@@ -5390,14 +5390,18 @@ a,
 }
 
 .blog-item__category {
-    color: #ff002d;
+    display: inline-block;
+    color: white;
     font-size: 16px;
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: .16px;
-    text-decoration: underline;
-    margin-bottom: 20px; /* Space between category and title */
+    text-decoration: none;
+    padding: 8px 16px;
+    border-radius: 16px;
+    background-color: red;
 }
+
 
 .blog-item__title {
     font-size: 20px;

@@ -1,75 +1,246 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const tabLinks = document.querySelectorAll('.case-study__links a');
-    const tabPanels = document.querySelectorAll('.tab-panel');
+  const mainTabLinks = document.querySelectorAll('.case-study__links a[role="tab"]');
+  const subTabContainer = document.querySelector('.tabpanels');
+  const allTabLink = document.querySelector('.case-study__links a[href="portfolio.html"]:not([data-index])');
+  const caseStudyGrid = document.querySelector('.case-study__grid.all-tab-grid');
+  const topSection = document.querySelector('.section-general-top');
+  const mapSection = document.querySelector('.map');
+  const newContentSection = document.createElement('section');
+  newContentSection.classList.add('section', 'section--portfolio', 'block-portfolio');
+  newContentSection.style.cssText = 'padding-top: 0px;';
 
-    // pagination
-    const totalPages = 10; //  chỉnh tổng số trang ở đây
-    const pagination = document.querySelector(".pagination");
+  const caseStudySection = document.querySelector('.case-study');
+  if (caseStudySection) {
+    caseStudySection.insertAdjacentElement('afterend', newContentSection);
+  }
 
-    // tablink
-    tabLinks.forEach((tab, index) => {
-        tab.addEventListener('click', function (e) {
-            e.preventDefault();
+  const portfolioData = [
+    // node.js
+    { name: "Jet.UA", subtitle: "Electric scooter rental app for the largest company on the Ukrainian market", image: "assets/ksu/jet_ua.webp", link: "../e-commerce-node.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support &amp; Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "C24", subtitle: "Electric scooter rental service", image: "assets/ksu/c24-main3-_1_-min_1.webp", link: "../iot-app-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "Quantum Listing", subtitle: "QuantumListing is the new crowd-sourced real estate listing platform for commercial real estate agents, owners, and tenants.", image: "assets/ksu/ql-main-min-6499a45f65abe.webp", link: "../real-estate-app-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "E-GREE", subtitle: "mobile application", image: "assets/ksu/e-gree-main-min-1-64996714b568f.webp", link: "../react-native-mobile-app-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "Players iQ", subtitle: "Athlete training app", image: "assets/ksu/players-iq-main-min-64996be1597d9.webp", link: "../athlete-training-app-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "AllsWell", subtitle: "Senior care app", image: "assets/ksu/allwell-main-1-1-64999cfd259c6.webp", link: "../senior-care-app-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "WeCare4®", subtitle: "Comprehensive web application for caregivers", image: "assets/ksu/wecare-main-min-649abbd560a1c.webp", link: "../react-js-app-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "B2B Avtolider", subtitle: "Developing a Comprehensive Auto Parts Website and B2B Portal for Enhanced Efficiency and Engagement", image: "assets/img/portfolio/Avto.png", link: "../avtolider-b2b.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    { name: "Plan.Net", subtitle: "Revolutionizing Social Media Management: Comprehensive Web Application Development", image: "assets/img/portfolio/Plannet.png", link: "../plannet-social-media-web-app.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "Node.JS" },
+    //end: node.js
+    // php
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "PHP" },
+    { name: "Zumic", subtitle: "Ticket seller", image: "assets/ksu/zumic-main-min.webp", link: "../concert-ticket-website-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "PHP" },
+    { name: "Ultraziz", subtitle: "UltraZIZ sells quality personal protective equipment (PPE) for workers and companies in Ukraine", image: "assets/ksu/ultraziz-main_1.webp", link: "../e-commerce-store-ultraziz.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "PHP" },
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design", "Front-End Development", "Back-End Development", "Support & Maintenance"], category: "Technologies", subCategory: "PHP" },
+    // end: php
+    // lavarel
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "Laravel" }, 
+    { name: "Zumic", subtitle: "Ticket seller", image: "assets/ksu/zumic-main-min.webp", link: "../concert-ticket-website-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "Laravel" }, 
+    { name: "Ultraziz", subtitle: "UltraZIZ sells quality personal protective equipment (PPE) for workers and companies in Ukraine", image: "assets/ksu/ultraziz-main_1.webp", link: "../e-commerce-store-ultraziz.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "Laravel" }, 
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "Laravel" },
+    // end: lavarel
+    // react
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React.JS" }, 
+    { name: "B2B Avtolider", subtitle: "Developing a Comprehensive Auto Parts Website and B2B Portal for Enhanced Efficiency and Engagement", image: "assets/img/portfolio/Avto.png", link: "../avtolider-b2b.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React.JS" }, 
+    { name: "Plan.Net", subtitle: "Revolutionizing Social Media Management: Comprehensive Web Application Development", image: "assets/img/portfolio/Plannet.png", link: "../plannet-social-media-web-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React.JS" },
+    // end: react
+    // react native
+    { name: "Jet.UA", subtitle: "Electric scooter rental app for the largest company on the Ukrainian market", image: "assets/ksu/jet_ua.webp", link: "../electric-scooter-rental-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React Native" }, 
+    { name: "E-GREE", subtitle: "mobile application", image: "assets/ksu/e-gree-main-min-1-64996714b568f.webp", link: "../react-native-mobile-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React Native" }, 
+    { name: "Players iQ", subtitle: "Athlete training app", image: "assets/ksu/players-iq-main-min-64996be1597d9.webp", link: "../athlete-training-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React Native" }, 
+    { name: "AllsWell", subtitle: "Senior care app", image: "assets/ksu/allwell-main-1-1-64999cfd259c6.webp", link: "../senior-care-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React Native" }, 
+    { name: "WeCare4®", subtitle: "Comprehensive web application for caregivers", image: "assets/ksu/wecare-main-min-649abbd560a1c.webp", link: "../react-js-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "React Native" },
+    // end: react native
+    // flutter
+    { name: "C24", subtitle: "Electric scooter rental service", image: "assets/ksu/c24-main3-_1_-min_1.webp", link: "../iot-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "Flutter" }, 
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "Flutter" },
+    // end: flutter
+    // Aws
+    { name: "Jet.UA", subtitle: "Electric scooter rental app for the largest company on the Ukrainian market", image: "assets/ksu/jet_ua.webp", link: "../electric-scooter-rental-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "AWS" }, 
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Technologies", subCategory: "AWS" },
+    // end: Aws
+    // web application
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Quantum Listing", subtitle: "QuantumListing is the new crowd-sourced real estate listing platform for commercial real estate agents, owners, and tenants.", image: "assets/ksu/ql-main-min-6499a45f65abe.webp", link: "../real-estate-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Zumic", subtitle: "Ticket seller", image: "assets/ksu/zumic-main-min.webp", link: "../concert-ticket-website-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Fantero", subtitle: "Digital content marketplace for freelancers.", image: "assets/img/portfolio/fantero.png", link: "../fantero.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" },
+    { name: "Communications Match", subtitle: "Search engine that connects companies with communications professionals", image: "assets/ksu/match_main-min.webp", link: "../communication-match.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Ultraziz", subtitle: "UltraZIZ sells quality personal protective equipment (PPE) for workers and companies in Ukraine", image: "assets/ksu/ultraziz-main_1.webp", link: "../e-commerce-store-ultraziz.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Cosmonova", subtitle: "Professional stars registration.", image: "assets/img/portfolio/cosmonova.png", link: "../cosmonova.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Amo-ECOMMERCE", subtitle: "Omnichannel e-commerce store that sells car spare parts.", image: "assets/ksu/AMO_main-min.webp", link: "../amo.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "WeCare4®", subtitle: "Comprehensive web application for caregivers", image: "assets/ksu/wecare-main-min-649abbd560a1c.webp", link: "../react-js-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "B2B Avtolider", subtitle: "Developing a Comprehensive Auto Parts Website and B2B Portal for Enhanced Efficiency and Engagement", image: "assets/img/portfolio/Avto.png", link: "../avtolider-b2b.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" }, 
+    { name: "Plan.Net", subtitle: "Revolutionizing Social Media Management: Comprehensive Web Application Development", image: "assets/img/portfolio/Plannet.png", link: "../plannet-social-media-web-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Web applications" },
+    // end: web application
+    // Mobile applications
+    { name: "Jet.UA", subtitle: "Electric scooter rental app for the largest company on the Ukrainian market", image: "assets/ksu/jet_ua.webp", link: "../electric-scooter-rental-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" }, 
+    { name: "C24", subtitle: "Electric scooter rental service", image: "assets/ksu/c24-main3-_1_-min_1.webp", link: "../iot-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" }, 
+    { name: "Compass VR", subtitle: "360 video and Virtual Reality application for mobile devices and VR headsets.", image: "assets/img/portfolio/compass.png", link: "../compass.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" }, 
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" }, 
+    { name: "E-GREE", subtitle: "mobile application", image: "assets/ksu/e-gree-main-min-1-64996714b568f.webp", link: "../react-native-mobile-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" }, 
+    { name: "Players iQ", subtitle: "Athlete training app", image: "assets/ksu/players-iq-main-min-64996be1597d9.webp", link: "../athlete-training-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" }, 
+    { name: "AllsWell", subtitle: "Senior care app", image: "assets/ksu/allwell-main-1-1-64999cfd259c6.webp", link: "../senior-care-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Mobile applications" },
+    // end: Mobile applications
+    // IOS
+    { name: "Jet.UA", subtitle: "Electric scooter rental app for the largest company on the Ukrainian market", image: "assets/ksu/jet_ua.webp", link: "../electric-scooter-rental-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "iOS" }, 
+    { name: "C24", subtitle: "Electric scooter rental service", image: "assets/ksu/c24-main3-_1_-min_1.webp", link: "../iot-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "iOS" }, 
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "iOS" }, 
+    { name: "E-GREE", subtitle: "mobile application", image: "assets/ksu/e-gree-main-min-1-64996714b568f.webp", link: "../react-native-mobile-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "iOS" }, 
+    { name: "Players iQ", subtitle: "Athlete training app", image: "assets/ksu/players-iq-main-min-64996be1597d9.webp", link: "../athlete-training-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "iOS" }, 
+    { name: "AllsWell", subtitle: "Senior care app", image: "assets/ksu/allwell-main-1-1-64999cfd259c6.webp", link: "../senior-care-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "iOS" },
+    // end: IOS
+    // android
+    { name: "Jet.UA", subtitle: "Electric scooter rental app for the largest company on the Ukrainian market", image: "assets/ksu/jet_ua.webp", link: "../electric-scooter-rental-app.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Android" },
+    { name: "C24", subtitle: "Electric scooter rental service", image: "assets/ksu/c24-main3-_1_-min_1.webp", link: "../iot-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Android" },
+    { name: "Compass VR", subtitle: "360 video and Virtual Reality application for mobile devices and VR headsets.", image: "assets/img/portfolio/compass.png", link: "../compass.html", services: ["UX/UI Design","Front-End Development","Front-End Development","Front-End Development"], category: "Platforms", subCategory: "Android" },
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Android" },
+    { name: "E-GREE", subtitle: "mobile application", image: "assets/ksu/e-gree-main-min-1-64996714b568f.webp", link: "../react-native-mobile-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Android" },
+    { name: "Players iQ", subtitle: "Athlete training app", image: "assets/ksu/players-iq-main-min-64996be1597d9.webp", link: "../athlete-training-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Android" },
+    { name: "AllsWell", subtitle: "Senior care app", image: "assets/ksu/allwell-main-1-1-64999cfd259c6.webp", link: "../senior-care-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "Android" },
+    // end: android
+    // PWA
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Platforms", subCategory: "PWA" },
+    // end: PWA
+    // Business Tool
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Business Tool" },
+    { name: "Quantum Listing", subtitle: "QuantumListing is the new crowd-sourced real estate listing platform for commercial real estate agents, owners, and tenants.", image: "assets/ksu/ql-main-min-6499a45f65abe.webp", link: "../real-estate-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Business Tool" },
+    { name: "Communications Match", subtitle: "Search engine that connects companies with communications professionals", image: "assets/ksu/match_main-min.webp", link: "../communication-match.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Business Tool" },
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Business Tool" },
+    { name: "Players iQ", subtitle: "Athlete training app", image: "assets/ksu/players-iq-main-min-64996be1597d9.webp", link: "../athlete-training-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Business Tool" },
+    { name: "WeCare4®", subtitle: "Comprehensive web application for caregivers", image: "assets/ksu/wecare-main-min-649abbd560a1c.webp", link: "../react-js-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Business Tool" },
+    // end: Business Tool
+    // Saas
+    { name: "Compass VR", subtitle: "360 video and Virtual Reality application for mobile devices and VR headsets.", image: "assets/img/portfolio/compass.png", link: "../compass.html", services: ["UX/UI Design","Front-End Development","Front-End Development","Front-End Development"], category: "Product Type", subCategory: "Saas" },
+    { name: "Tap App Security", subtitle: "Crisis management communication system.", image: "assets/ksu/tapapp-portfolio-main-img-min-64996a704cde8.webp", link: "../security-software-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Saas" },
+    { name: "E-GREE", subtitle: "mobile application", image: "assets/ksu/e-gree-main-min-1-64996714b568f.webp", link: "../react-native-mobile-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Saas" },
+    { name: "AllsWell", subtitle: "Senior care app", image: "assets/ksu/allwell-main-1-1-64999cfd259c6.webp", link: "../senior-care-app-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Saas" },
+    // end: Saas
+    // CRM
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "CRM" },
+    // end: CRM
+    // ERP
+    { name: "Imover crm", subtitle: "CRM for moving business.", image: "assets/ksu/imover-main-min.webp", link: "../crm-for-moving-company.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "ERP" },
+    // end: ERP
+    // Marketplace / e-commerce
+    { name: "Zumic", subtitle: "Ticket seller", image: "assets/ksu/zumic-main-min.webp", link: "../concert-ticket-website-example.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Marketplace / e-commerce" },
+    { name: "Fantero", subtitle: "Digital content marketplace for freelancers.", image: "assets/img/portfolio/fantero.png", link: "../fantero.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Marketplace / e-commerce" },
+    { name: "Ultraziz", subtitle: "UltraZIZ sells quality personal protective equipment (PPE) for workers and companies in Ukraine", image: "assets/ksu/ultraziz-main_1.webp", link: "../e-commerce-store-ultraziz.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Marketplace / e-commerce" },
+    { name: "Cosmonova", subtitle: "Professional stars registration.", image: "assets/img/portfolio/cosmonova.png", link: "../cosmonova.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Marketplace / e-commerce" },
+    { name: "Amo-ECOMMERCE", subtitle: "Omnichannel e-commerce store that sells car spare parts.", image: "assets/ksu/AMO_main-min.webp", link: "../amo.html", services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"], category: "Product Type", subCategory: "Marketplace / e-commerce" },
+    // end: Marketplace / e-commerce
+    // PaaS
+    {
+    name: "Jet.UA",
+    subtitle: "Electric scooter rental app for the largest company on the Ukrainian market",
+    image: "assets/ksu/jet_ua.webp",
+    link: "../electric-scooter-rental-app.html",
+    services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"],
+    category: "Product Type",
+    subCategory: "PaaS"
+  },
+  {
+    name: "C24",
+    subtitle: "Electric scooter rental service",
+    image: "assets/ksu/c24-main3-_1_-min_1.webp",
+    link: "../iot-app-example.html",
+    services: ["UX/UI Design","Front-End Development","Back-End Development","Support & Maintenance"],
+    category: "Product Type",
+    subCategory: "PaaS"
+  }
+    // end: PaaS
+  ];
 
-            // 1. Bỏ class 'active' khỏi tất cả tab
-            tabLinks.forEach(t => t.classList.remove('active'));
-
-            // 2. Thêm class 'active' vào tab được click
-            tab.classList.add('active');
-
-            // 3. Ẩn tất cả tab-panels
-            tabPanels.forEach(panel => {
-                panel.style.display = 'none';
-                panel.classList.remove('active');
-            });
-
-            // 4. Kiểm tra nếu là tab "All"
-            const isAllTab = !tab.hasAttribute('data-index');
-            if (isAllTab) {
-                // Không hiển thị tab-panel nào
-                return;
-            }
-
-            // 5. Nếu không phải "All", hiển thị tab-panel theo index
-            const tabIndex = tab.getAttribute('data-index');
-
-            const selectedPanel = document.querySelector(`.tab-panel[data-index="${tabIndex}"]`);
-            if (selectedPanel) {
-                selectedPanel.style.display = 'flex';
-                selectedPanel.classList.add('active');
-            }
-        });
-    });
-
-    // Kích hoạt mặc định tab đầu tiên ("All")
-    tabLinks[0].click();
-
-
-    // phân trang 
-    function renderPagination(total) {
-        let html = "";
-
-        // Nút prev
-        html += `<li><a href="#">«</a></li>`;
-
-        // Trang 1 -> 3
-        for (let i = 1; i <= Math.min(3, total); i++) {
-            html += `<li><a href="#" class="${i === 1 ? "active" : ""}">${i}</a></li>`;
-        }
-
-        // Nếu nhiều hơn 3 trang thì thêm dấu ...
-        if (total > 3) {
-            html += `<li><span>...</span></li>`;
-            html += `<li><a href="#">${total}</a></li>`; // Trang cuối
-        } else if (total === 4) {
-            html += `<li><a href="#">4</a></li>`;
-        }
-
-        // Nút next
-        html += `<li><a href="#">»</a></li>`;
-
-        pagination.innerHTML = html;
+  function renderPortfolioItems(items) {
+    newContentSection.innerHTML = '';
+    if (items.length > 0) {
+      items.forEach((item, index) => {
+        const isEven = (index + 1) % 2 === 0;
+        const rowClass = isEven ? 'flex-row-reverse' : '';
+        const itemHtml = `
+          <div class="container section__inner" style ="margin-bottom:2%; ">
+            <div class="row ${rowClass}">
+              <div class="col-12 col-md-6 portfolio-column portfolio-column__image">
+                <img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: auto;">
+              </div>
+              <div class="col-12 col-md-6 portfolio-column portfolio-column__description">
+                <h2 class="section-title section-title--portfolio" data-title="">${item.name}</h2>
+                <p class="section-subtitle">${item.subtitle}</p>
+                <div class="detail-about__text block-detail__inner list--columns">
+                  <ul>
+                    ${item.services.map(service => `<li>${service}</li>`).join('')}
+                  </ul>
+                </div>
+                <div class="btn-wrap">
+                  <a href="${item.link}" class="btn">More</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+        newContentSection.innerHTML += itemHtml;
+      });
     }
+  }
 
-    renderPagination(totalPages);
+  mainTabLinks.forEach(tab => {
+    tab.addEventListener('click', function(e) {
+      e.preventDefault();
+      const tabIndex = this.getAttribute('data-index');
+      
+      mainTabLinks.forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+
+      document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.style.display = 'none';
+        panel.classList.remove('active');
+      });
+
+      if (tabIndex) {
+        document.querySelector(`.tab-panel[data-index="${tabIndex}"]`).style.display = 'flex';
+      }
+    });
+  });
+
+  document.querySelectorAll('.sub-tab').forEach(subTab => {
+    subTab.addEventListener('click', function (e) {
+      e.preventDefault();
+      const subCategory = this.textContent.trim();
+      
+      // Ẩn hai section đầu
+      topSection.style.display = 'none';
+      mapSection.style.display = 'none';
+      if (caseStudyGrid) {
+        caseStudyGrid.style.display = 'none';
+      }
+
+      // Lọc dữ liệu dựa trên subCategory
+      const filteredItems = portfolioData.filter(item => item.subCategory === subCategory);
+      renderPortfolioItems(filteredItems);
+
+      // Cập nhật trạng thái active
+      document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
+      this.classList.add('active');
+    });
+  });
+
+  allTabLink.addEventListener('click', function(e) {
+    e.preventDefault();
+    topSection.style.display = 'block';
+    mapSection.style.display = 'block';
+    if (caseStudyGrid) {
+      caseStudyGrid.style.display = 'grid';
+    }
+    newContentSection.innerHTML = '';
+    
+    // Đảm bảo chỉ tab "All" là active
+    mainTabLinks.forEach(t => t.classList.remove('active'));
+    this.classList.add('active');
+    
+    document.querySelectorAll('.tab-panel').forEach(panel => {
+        panel.style.display = 'none';
+    });
+  });
+  
+  allTabLink.click();
 });

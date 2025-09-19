@@ -253,6 +253,7 @@ amp-selector.tabpanels [role=tabpanel][selected] {
 
 .case-grid__img:hover {
     transform: translateY(-4px) scale(1.05);
+    cursor: pointer;
 }
 
 @media (max-width: 768px) {
@@ -278,6 +279,7 @@ amp-selector.tabpanels [role=tabpanel][selected] {
 
 .case-card:hover {
     transform: translateY(-6px);
+    cursor: pointer;
 }
 
 .case-card__img {

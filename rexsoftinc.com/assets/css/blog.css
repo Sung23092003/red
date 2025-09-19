@@ -62,6 +62,7 @@
     line-height: 32.42px;
     letter-spacing: .1px;
     margin-top: 20px;
+    cursor: pointer;
 }
 
 .blog-item__text {
