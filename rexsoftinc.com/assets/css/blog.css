@@ -65,6 +65,10 @@
     cursor: pointer;
 }
 
+.blog-item__title:hover{
+    color: #ff002d;
+}
+
 .blog-item__text {
     color: #7b8389;
     font-size: 14px;
