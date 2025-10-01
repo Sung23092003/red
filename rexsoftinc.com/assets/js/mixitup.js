@@ -234,21 +234,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Tab "All"
   allTabLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    topSection.style.display = 'block';
-    mapSection.style.display = 'block';
-    if (caseStudyGrid) {
-      caseStudyGrid.style.display = 'grid';
-    }
-    newContentSection.innerHTML = '';
+  e.preventDefault();
+  topSection.style.display = 'block';
+  mapSection.style.display = 'block';
+  if (caseStudyGrid) {
+    caseStudyGrid.style.display = 'grid';
+  }
 
-    mainTabLinks.forEach(t => t.classList.remove('active'));
-    this.classList.add('active');
+  // Render lại toàn bộ items
+  renderPortfolioItems(portfolioData);
 
-    document.querySelectorAll('.tab-panel').forEach(panel => {
-      panel.style.display = 'none';
-    });
+  mainTabLinks.forEach(t => t.classList.remove('active'));
+  this.classList.add('active');
+
+  document.querySelectorAll('.tab-panel').forEach(panel => {
+    panel.style.display = 'none';
   });
+});
 
   //Render toàn bộ items ngay khi load
   renderPortfolioItems(portfolioData);
