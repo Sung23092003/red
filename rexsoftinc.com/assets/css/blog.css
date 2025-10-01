@@ -119,12 +119,12 @@
     margin: 0 0 75px
 }
 
-.num-pagination__prew {
-    margin-right: 20px
+.num-pagination__prev {
+    margin-right: 20px;
 }
 
 .num-pagination__next {
-    margin-left: 20px
+    margin-left: 20px;
 }
 
 .pagination-list {
@@ -5461,4 +5461,11 @@ body {
 .notification .btn:hover {
     background-color: #ff002d;
     color: #ffffff;
+}
+
+.num-pagination__2{
+  display: inline-flex;  
+  justify-content: center;
+  align-items: center;
+  padding: 6px 12px;
 }

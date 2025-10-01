@@ -151,42 +151,37 @@ document.addEventListener('DOMContentLoaded', function () {
     // end: PaaS
   ];
 
-  
-function renderPortfolioItems(items) {
-  // Reset nội dung
-  newContentSection.innerHTML = '';
-
-  if (items.length > 0) {
-    // Khung ngoài giữ grid
-    const gridWrapper = `
-      <div class="container">
-      <div class="col-lg-12">
-        <div class="case-study__grid all-tab-grid">
-          <div class="grid" id="category-fillter">
+  function renderPortfolioItems(items) {
+    newContentSection.innerHTML = '';
+    if (items.length > 0) {
+      items.forEach((item, index) => {
+        const isEven = (index + 1) % 2 === 0;
+        const rowClass = isEven ? 'flex-row-reverse' : '';
+        const itemHtml = `
+          <div class="container section__inner" style ="margin-bottom:2%; ">
+            <div class="row ${rowClass}">
+              <div class="col-12 col-md-6 portfolio-column portfolio-column__image">
+                <img src="${item.image}" alt="${item.name}" style="max-width: 100%; height: auto;">
+              </div>
+              <div class="col-12 col-md-6 portfolio-column portfolio-column__description">
+                <h2 class="section-title section-title--portfolio" data-title="">${item.name}</h2>
+                <p class="section-subtitle">${item.subtitle}</p>
+                <div class="detail-about__text block-detail__inner list--columns">
+                  <ul>
+                    ${item.services.map(service => `<li>${service}</li>`).join('')}
+                  </ul>
+                </div>
+                <div class="btn-wrap">
+                  <a href="${item.link}" class="btn">More</a>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-      </div>
-    `;
-    newContentSection.innerHTML = gridWrapper;
-
-    const gridContainer = newContentSection.querySelector('.grid');
-
-    // Thêm từng item vào grid
-    items.forEach(item => {
-      const itemHtml = `
-        <div class="grid-item">
-          <img class="case-grid__img" src="${item.image}" alt="${item.name}">
-          <div class="overlay">
-            <span class="category">${item.name}</span>
-            <a class ="category__subtitle" href="${item.name}">Explore now</a>
-          </div>
-        </div>
-      `;
-      gridContainer.innerHTML += itemHtml;
-    });
+        `;
+        newContentSection.innerHTML += itemHtml;
+      });
+    }
   }
-}
 
   mainTabLinks.forEach(tab => {
     tab.addEventListener('click', function(e) {
@@ -245,40 +240,7 @@ function renderPortfolioItems(items) {
     document.querySelectorAll('.tab-panel').forEach(panel => {
         panel.style.display = 'none';
     });
-
-    if (typeof paginationContainer !== "undefined" && paginationContainer) {
-    paginationContainer.style.display = "block";
-  }
   });
   
   allTabLink.click();
-
-
-  // render all
-   const gridContainer = document.getElementById("category-fillter");
-
-
-function renderPage() {
-  gridContainer.innerHTML = "";
-
-  portfolioData.forEach(item => {
-    const itemHtml = `
-      <div class="grid-item">
-        <img class="case-grid__img" src="${item.image}" alt="${item.name}">
-        <div class="overlay">
-          <span class="category">${item.name}</span>
-          <a class="category__subtitle" href="${item.link}">Explore now</a>
-        </div>
-        <!-- Link riêng cho mobile -->
-        <a class="mobile-explore" href="${item.link}">Explore now</a>
-      </div>
-    `;
-    gridContainer.innerHTML += itemHtml;
-  });
-}
-
-
-
-  // Render lần đầu
-  renderPage();
 });
