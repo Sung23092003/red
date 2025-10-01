@@ -5,10 +5,13 @@ document.addEventListener('DOMContentLoaded', function () {
   const caseStudyGrid = document.querySelector('.case-study__grid.all-tab-grid');
   const topSection = document.querySelector('.section-general-top');
   const mapSection = document.querySelector('.map');
+
+  // Tạo section mới để render portfolio
   const newContentSection = document.createElement('section');
   newContentSection.classList.add('section', 'section--portfolio', 'block-portfolio');
   newContentSection.style.cssText = 'padding-top: 0px;';
 
+  // Gắn section mới ngay sau case-study
   const caseStudySection = document.querySelector('.case-study');
   if (caseStudySection) {
     caseStudySection.insertAdjacentElement('afterend', newContentSection);
@@ -152,42 +155,42 @@ document.addEventListener('DOMContentLoaded', function () {
   ];
 
   
-function renderPortfolioItems(items) {
-  // Reset nội dung
-  newContentSection.innerHTML = '';
+// Hàm render dữ liệu vào section mới
+  function renderPortfolioItems(items) {
+    newContentSection.innerHTML = '';
 
-  if (items.length > 0) {
-    // Khung ngoài giữ grid
-    const gridWrapper = `
-      <div class="container">
-      <div class="col-lg-12">
-        <div class="case-study__grid all-tab-grid">
-          <div class="grid" id="category-fillter">
-          </div>
-        </div>
-      </div>
-      </div>
-    `;
-    newContentSection.innerHTML = gridWrapper;
-
-    const gridContainer = newContentSection.querySelector('.grid');
-
-    // Thêm từng item vào grid
-    items.forEach(item => {
-      const itemHtml = `
-        <div class="grid-item">
-          <img class="case-grid__img" src="${item.image}" alt="${item.name}">
-          <div class="overlay">
-            <span class="category">${item.name}</span>
-            <a class ="category__subtitle" href="${item.name}">Explore now</a>
+    if (items.length > 0) {
+      const gridWrapper = `
+        <div class="container">
+          <div class="col-lg-12">
+            <div class="case-study__grid all-tab-grid">
+              <div class="grid" id="new-category-fillter"></div>
+            </div>
           </div>
         </div>
       `;
-      gridContainer.innerHTML += itemHtml;
-    });
-  }
-}
+      newContentSection.innerHTML = gridWrapper;
 
+      const gridContainer = newContentSection.querySelector('.grid');
+
+      items.forEach(item => {
+        const itemHtml = `
+          <div class="grid-item">
+            <img class="case-grid__img" src="${item.image}" alt="${item.name}">
+            <div class="overlay">
+              <span class="category">${item.name}</span>
+              <a class="category__subtitle" href="${item.link}">Explore now</a>
+            </div>
+            <!-- Link riêng cho mobile -->
+            <a class="mobile-explore" href="${item.link}">Explore now</a>
+          </div>
+        `;
+        gridContainer.innerHTML += itemHtml;
+      });
+    }
+  }
+
+  // Sự kiện tab chính
   mainTabLinks.forEach(tab => {
     tab.addEventListener('click', function(e) {
       e.preventDefault();
@@ -207,28 +210,29 @@ function renderPortfolioItems(items) {
     });
   });
 
+  // Sự kiện sub-tab
   document.querySelectorAll('.sub-tab').forEach(subTab => {
     subTab.addEventListener('click', function (e) {
       e.preventDefault();
       const subCategory = this.textContent.trim();
-      
-      // Ẩn hai section đầu
+
+      // Ẩn section cũ
       topSection.style.display = 'none';
       mapSection.style.display = 'none';
       if (caseStudyGrid) {
         caseStudyGrid.style.display = 'none';
       }
 
-      // Lọc dữ liệu dựa trên subCategory
+      // Lọc và render vào section mới
       const filteredItems = portfolioData.filter(item => item.subCategory === subCategory);
       renderPortfolioItems(filteredItems);
 
-      // Cập nhật trạng thái active
       document.querySelectorAll('.sub-tab').forEach(t => t.classList.remove('active'));
       this.classList.add('active');
     });
   });
 
+  // Tab "All"
   allTabLink.addEventListener('click', function(e) {
     e.preventDefault();
     topSection.style.display = 'block';
@@ -237,48 +241,15 @@ function renderPortfolioItems(items) {
       caseStudyGrid.style.display = 'grid';
     }
     newContentSection.innerHTML = '';
-    
-    // Đảm bảo chỉ tab "All" là active
+
     mainTabLinks.forEach(t => t.classList.remove('active'));
     this.classList.add('active');
-    
+
     document.querySelectorAll('.tab-panel').forEach(panel => {
-        panel.style.display = 'none';
+      panel.style.display = 'none';
     });
-
-    if (typeof paginationContainer !== "undefined" && paginationContainer) {
-    paginationContainer.style.display = "block";
-  }
   });
-  
-  allTabLink.click();
 
-
-  // render all
-   const gridContainer = document.getElementById("category-fillter");
-
-
-function renderPage() {
-  gridContainer.innerHTML = "";
-
-  portfolioData.forEach(item => {
-    const itemHtml = `
-      <div class="grid-item">
-        <img class="case-grid__img" src="${item.image}" alt="${item.name}">
-        <div class="overlay">
-          <span class="category">${item.name}</span>
-          <a class="category__subtitle" href="${item.link}">Explore now</a>
-        </div>
-        <!-- Link riêng cho mobile -->
-        <a class="mobile-explore" href="${item.link}">Explore now</a>
-      </div>
-    `;
-    gridContainer.innerHTML += itemHtml;
-  });
-}
-
-
-
-  // Render lần đầu
-  renderPage();
+  //Render toàn bộ items ngay khi load
+  renderPortfolioItems(portfolioData);
 });
